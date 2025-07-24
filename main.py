@@ -18,23 +18,31 @@ def root():
 class WelcomeRequest(BaseModel):
     name:str
 
-@app.get("/welcome")
-def welcome_user(request: WelcomeRequest):
-    return {f"Bienvenue {request.name}"}
+@app.get("/welcome/{name}")
+def welcome_user(name: str):
+    return {"message":f"Welcome {name}"}
 
 
-class Students:
+Array_students =[]
+
+class Students(BaseModel):
     Reference:str
     FirstName:str
     LastName:str
     Age:int
-@app.post("/students")
+@app.post("/students",response_model=list[Students],status_code=201)
+def create_students(new_student:Students):
+    Array_students.append(new_student)
+    return Array_students
+
 
 
 
 @app.get("/studens}")
-def get_students_List_objet(request: Students ):
-    return (Students)
+def get_students_List_objet( ):
+    return {"total":len(Array_students)}
+
+@app.put("/students")
 
 
 
